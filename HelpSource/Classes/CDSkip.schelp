@@ -4,9 +4,9 @@ categories:: UGens>Delays
 
 description::
 
-This UGen simulates CD skipping by scrubbing around a delay line. Rather than a simple discontinuity, it includes a ballpark-accurate simulation of the random glitchy waveforms that happen when a CD skips.
+This UGen simulates a real-time variant of CD skipping. Rather than a simple discontinuity, it includes a ballpark-accurate simulation of the random glitchy waveforms that happen when a CD player skips.
 
-If you want a set-it-and-forget-it randomized CD glitch, enable code:: autoMode ::
+TIP: If you want easy randomized skipping without fine-grained control, enable code:: autoMode :: and play with code:: autoSpeed :: . Otherwise, try using Dust or Impulse in code:: skipTrigger :: while playing with code:: pos :: .
 
 classmethods::
 
