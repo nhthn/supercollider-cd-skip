@@ -1,5 +1,4 @@
-// PluginCDSkip.cpp
-// Nathan Ho (nathan.waikin.ho@gmail.com)
+#include <limits>
 
 #include "SC_PlugIn.hpp"
 #include "SCCDSkip.hpp"
@@ -12,6 +11,8 @@ SCCDSkip::SCCDSkip()
     : m_skipTriggerLast(0),
     m_resetTriggerLast(0)
 {
+    clear(1);
+
     mCalcFunc = make_calc_function<SCCDSkip, &SCCDSkip::next>();
 
     float sampleRate = mWorld->mSampleRate;
@@ -19,16 +20,26 @@ SCCDSkip::SCCDSkip()
 
     int memoryLength = CDSkip::CDSkip::getMemoryLength(sampleRate, maxDelay);
     m_memory = static_cast<float*>(RTAlloc(mWorld, sizeof(float) * memoryLength));
+    if (m_memory == nullptr) {
+        mCalcFunc = make_calc_function<SCCDSkip, &SCCDSkip::clear>();
+        return;
+    }
 
-    m_core = std::make_unique<CDSkip::CDSkip>(sampleRate, maxDelay, m_memory);
+    uint32_t seed = mParent->mRGen->irand(std::numeric_limits<int32>::max());
+
+    m_core = std::make_unique<CDSkip::CDSkip>(sampleRate, maxDelay, m_memory, seed);
     m_core->setAutoMode(true);
-
-    out0(0) = 0;
-    out0(1) = 0;
 }
 
 SCCDSkip::~SCCDSkip() {
     RTFree(mWorld, m_memory);
+}
+
+void SCCDSkip::clear(int nSamples) {
+    for (int i = 0; i < nSamples; i++) {
+        out(0)[i] = 0;
+        out(1)[i] = 0;
+    }
 }
 
 void SCCDSkip::next(int nSamples) {
@@ -52,7 +63,7 @@ void SCCDSkip::next(int nSamples) {
     m_core->setCleanMode(clean);
     m_core->setFrozen(freeze);
 
-    for (int i = 0; i < nSamples; ++i) {
+    for (int i = 0; i < nSamples; i++) {
         if (m_skipTriggerLast <= 0 && skipTrigger[i] > 0) {
             m_core->skip(pos[i]);
         } else if (m_resetTriggerLast <= 0 && resetTrigger[i] > 0) {

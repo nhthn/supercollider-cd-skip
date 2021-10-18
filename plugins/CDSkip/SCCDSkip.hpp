@@ -14,6 +14,7 @@ public:
 
 private:
     void next(int nSamples);
+    void clear(int nSamples);
 
     std::unique_ptr<CDSkip::CDSkip> m_core;
     float* m_memory;
