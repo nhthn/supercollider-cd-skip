@@ -1,0 +1,67 @@
+class:: CDSkip
+summary:: Simulates CD skipping
+categories:: UGens>Delays
+
+description::
+
+This UGen simulates CD skipping by scrubbing around a delay line. Rather than a simple discontinuity, it includes a ballpark-accurate simulation of the random glitchy waveforms that happen when a CD skips.
+
+If you want a set-it-and-forget-it randomized CD glitch, enable code:: autoMode ::
+
+classmethods::
+
+method::ar
+
+argument::in
+
+Input signal. Must be stereo!
+
+argument::maxDelay
+
+Length of the internal stereo buffer in seconds. Non-modulatable.
+
+argument::autoMode
+
+If positive, enable "auto mode." This automatically generates random skips and dropouts for you. Control rate only.
+
+argument::autoSpeed
+
+Speed of auto mode. At 1, the timing of glitches and dropouts is based on a real CD scratch experiment. Control rate only.
+
+argument::skipTrigger
+
+If input signal crosses from non-positive to positive, a skip to code:: pos :: happens, where code:: pos :: ranges from 0 (beginning of buffer) to 1 (end of buffer).
+
+Audio rate only. If this signal is not audio rate, it is converted to audio rate using a T2A.
+
+argument::resetTrigger
+
+If input signal crosses from non-positive to positive, a skip happens such that the read head is code:: pos :: seconds behind the write head.
+
+Audio rate only. If this signal is not audio rate, it is converted to audio rate using a T2A.
+
+If both triggers are activated at the same time, code:: skipTrigger :: overrides code:: resetTrigger ::.
+
+argument::pos
+
+This argument has different meanings depending on whether code:: skipTrigger :: or code:: resetTrigger :: is used. For code:: skipTrigger ::, this ranges from 0 (beginning of buffer) to 1 (end of buffer). The position is relatively arbitrary, but this has the advantage that skipping multiple times to the same position gives the classic CD repeat effect.
+
+For code:: resetTrigger ::, code:: pos :: indicates the delay in seconds, and therefore ranges from 0 (inclusive) to code:: maxDelay :: (exclusive). code:: resetTrigger :: may be preferable if you want controls more like a delay unit.
+
+argument::freeze
+
+If positive, prevent the write head from writing anything or from advancing. Control rate only.
+
+argument::clean
+
+If positive, no glitch waveform is generated, and standard discontinuities are used instead. Control rate only.
+
+examples::
+
+code::
+
+{ CDSkip.ar(SinOsc.ar ! 2, autoMode: 1) }.play;
+
+{ CDSkip.ar(SinOsc.ar ! 2, skipTrigger: Impulse.ar(4)) }.play;
+
+::

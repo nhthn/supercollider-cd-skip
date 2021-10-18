@@ -1,0 +1,3 @@
+[submodule "cd-skip"]
+	path = cd-skip
+	url = https://github.com/nhthn/cd-skip.git

@@ -64,9 +64,13 @@ endif()
 ####################################################################################################
 # Begin target CDSkip
 
+include_directories(cd-skip)
+
 set(CDSkip_cpp_files
-    plugins/CDSkip/CDSkip.hpp
-    plugins/CDSkip/CDSkip.cpp
+    cd-skip/CDSkip.hpp
+    cd-skip/CDSkip.cpp
+    plugins/CDSkip/SCCDSkip.hpp
+    plugins/CDSkip/SCCDSkip.cpp
 )
 set(CDSkip_sc_files
     plugins/CDSkip/CDSkip.sc
