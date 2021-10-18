@@ -76,7 +76,7 @@ set(CDSkip_sc_files
     plugins/CDSkip/CDSkip.sc
 )
 set(CDSkip_schelp_files
-    plugins/CDSkip/CDSkip.schelp
+    HelpSource/Classes/CDSkip.schelp
 )
 
 sc_add_server_plugin(
