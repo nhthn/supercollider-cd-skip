@@ -25,7 +25,7 @@ SCCDSkip::SCCDSkip()
         return;
     }
 
-    uint32_t seed = mParent->mRGen->irand(std::numeric_limits<int32>::max());
+    uint32_t seed = 1 + mParent->mRGen->irand(std::numeric_limits<int32>::max() - 1);
 
     m_core = std::make_unique<CDSkip::CDSkip>(sampleRate, maxDelay, m_memory, seed);
     m_core->setAutoMode(true);
