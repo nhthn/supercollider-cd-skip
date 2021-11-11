@@ -27,6 +27,8 @@ jobs:
     steps:
     - name: Checkout CDSkip
       uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 
     - name: Checkout SuperCollider
       uses: actions/checkout@v2
