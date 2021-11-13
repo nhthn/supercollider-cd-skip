@@ -1,7 +1,5 @@
 on:
-  push:
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+  push
 
 jobs:
   build:
@@ -29,6 +27,8 @@ jobs:
     steps:
     - name: Checkout CDSkip
       uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
 
     - name: Checkout SuperCollider
       uses: actions/checkout@v2
